@@ -37,17 +37,18 @@ on:
     branches: [ master, main ]
 
 jobs:
-
   unit:
+
     name: Unit tests
     runs-on: ubuntu-latest
 
-    integration:
-      if: contains(github.ref, 'master')
-      name: MASTER WORKFLOW
-      runs-on: ubuntu-latest
+    steps:
+      integration:
+        if: contains(github.ref, 'master')
+        name: MASTER WORKFLOW
+        runs-on: ubuntu-latest
 
-    lint:
-      if: contains(github.ref, 'main')
-      name: MAIN WORKFLOW
-      runs-on: ubuntu-latest
+      lint:
+        if: contains(github.ref, 'main')
+        name: MAIN WORKFLOW
+        runs-on: ubuntu-latest
