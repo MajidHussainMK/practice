@@ -45,10 +45,14 @@ jobs:
     steps:
       integration:
         if: contains(github.ref, 'master')
+      - uses: actions/checkout@v2
+      - run: echo MASTER
         name: MASTER WORKFLOW
         runs-on: ubuntu-latest
 
       lint:
         if: contains(github.ref, 'main')
+        - uses: actions/checkout@v2
+        - run: echo MAIN
         name: MAIN WORKFLOW
         runs-on: ubuntu-latest
