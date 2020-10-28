@@ -2,32 +2,8 @@ name: React CI/CD
 
 on:
   push:
-    branches: [ main ]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm i
-    - run: npm test
-    - run: npm run build
-    - run: echo IMPLEMENTING CI/CD
-
-on: 
-  push:
     branches: [ master ]
-  
+
 jobs:
   build:
 
@@ -43,4 +19,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo THIS IS MASTER'S JOB
+    # - run: npm i
+    # - run: npm test
+    # - run: npm run build
+    - run: echo IMPLEMENTING CI/CD
