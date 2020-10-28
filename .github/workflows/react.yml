@@ -14,7 +14,7 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: MASTER
+    - name: Custom Name
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -24,11 +24,3 @@ jobs:
     # - run: npm test
     # - run: npm run build
     - run: echo This should run when code is pushed on master
-
-    - name: MAIN
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: echo should run for MAIN branch
