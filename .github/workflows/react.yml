@@ -47,7 +47,6 @@ jobs:
         node-version: [14.x]
 
     steps:
-      integration:
         # if: contains(github.ref, 'master')
       - uses: actions/checkout@v2
       
