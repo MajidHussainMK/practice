@@ -14,7 +14,6 @@ jobs:
         node-version: [14.x]
 
     steps:
-      if: github.ref == 'refs/heads/master'
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -25,7 +24,6 @@ jobs:
     # - run: npm run build
     - run: echo This should run when code is pushed on master
 
-      if: github.ref == 'refs/heads/main'
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
