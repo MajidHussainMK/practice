@@ -2,7 +2,7 @@ name: React CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
 
 jobs:
   build:
@@ -22,4 +22,12 @@ jobs:
     # - run: npm i
     # - run: npm test
     # - run: npm run build
-    - run: echo IMPLEMENTING CI/CD
+    - run: echo This should run when code is pushed on master
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: echo should run for MAIN branch
