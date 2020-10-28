@@ -1,45 +1,12 @@
-# name: React CI/CD
-
-# on:
-#   push:
-#     branches: [ master, main ]
-
-# jobs:
-#   build:
-
-#     runs-on: ubuntu-latest
-
-#     strategy:
-#       matrix:
-#         node-version: [14.x]
-
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Use Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v1
-#       with:
-#         node-version: ${{ matrix.node-version }}
-#     # - run: npm i
-#     # - run: npm test
-#     # - run: npm run build
-#     - run: echo This should run when code is pushed on master
-
-#     - uses: actions/checkout@v2
-#     - name: Use Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v1
-#       with:
-#         node-version: ${{ matrix.node-version }}
-#     - run: echo should run for MAIN branch
-# name: React CI/CD
+name: React CI/CD
 
 on:
   push:
     branches: [ master, main ]
 
 jobs:
-  unit:
+  build:
 
-    name: Unit tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -47,18 +14,20 @@ jobs:
         node-version: [14.x]
 
     steps:
-        # if: contains(github.ref, 'master')
-      - uses: actions/checkout@v2
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
+    - uses: actions/checkout@v2
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
         node-version: ${{ matrix.node-version }}
-      - run: echo MASTER
+    # - run: npm i
+    # - run: npm test
+    # - run: npm run build
+    - run: echo This should run when code is pushed on master
 
-      # lint:
-        # if: contains(github.ref, 'main')
-        # - uses: actions/checkout@v2
-        # - run: echo MAIN
-        # name: MAIN WORKFLOW
-        # runs-on: ubuntu-latest
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: echo should run for MAIN branch
