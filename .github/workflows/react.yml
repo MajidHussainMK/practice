@@ -42,17 +42,24 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       integration:
         # if: contains(github.ref, 'master')
       - uses: actions/checkout@v2
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+        node-version: ${{ matrix.node-version }}
       - run: echo MASTER
-        name: MASTER WORKFLOW
-        runs-on: ubuntu-latest
 
-      lint:
+      # lint:
         # if: contains(github.ref, 'main')
-        - uses: actions/checkout@v2
-        - run: echo MAIN
-        name: MAIN WORKFLOW
-        runs-on: ubuntu-latest
+        # - uses: actions/checkout@v2
+        # - run: echo MAIN
+        # name: MAIN WORKFLOW
+        # runs-on: ubuntu-latest
