@@ -46,5 +46,6 @@ jobs:
     - run: echo ${{github.ref}}
 
     - name: My first step
+    uses: actions/setup-node@v1
     if: ${{ github.event_name == 'push' }}
     run: echo This event is a pull request that had an assignee removed.
