@@ -44,3 +44,7 @@ jobs:
     # - run: npm test
     # - run: npm run build
     - run: echo ${{github.ref}}
+
+    - name: My first step
+    if: ${{ github.event_name == 'push' }}
+    run: echo This event is a pull request that had an assignee removed.
