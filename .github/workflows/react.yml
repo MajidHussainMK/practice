@@ -40,5 +40,4 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    if: ${{ github.event_name == 'push' }}
     - run: echo ${{github.ref}}
