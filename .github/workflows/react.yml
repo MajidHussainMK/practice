@@ -23,7 +23,6 @@ jobs:
     
     - run: yarn install
     - run: yarn run test
-    - run: yarn run build
 
   deploy:
     needs: test  
@@ -39,7 +38,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     
-    # - run: yarn run build
+    - run: yarn install
+    - run: yarn run build
 
     - name: Staging
       if: github.ref == 'refs/heads/main'
