@@ -34,7 +34,7 @@ jobs:
       runs-on: ubuntu-latest
 
       env:
-      SOURCE_DIR: 'build'
+        SOURCE_DIR: 'build'
 
       steps:
       - uses: actions/checkout@v1
