@@ -1,11 +1,11 @@
-name: React CI/CD
+name: ReactJs CI/CD
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ staging, production ]
 
 jobs:
-  staging:
+  test:
 
     runs-on: ubuntu-latest
 
@@ -15,35 +15,52 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    # - run: npm i
-    # - run: npm test
-    # - run: npm run build
-    - run: echo This should run when code is pushed on master
+    
+    - run: yarn install
+    - run: yarn run test
+    - run: yarn run build
 
-  production:
-    needs: staging
+  deploy:
+    needs: test  
+
+    name: Deploy
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo ${{github.ref}}
+    
+    # - run: yarn run build
 
-    - name: Custome node ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      name: Staging
+      if: github.ref == 'refs/heads/staging'
+      uses: jakejarvis/s3-sync-action@master
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: echo CUSTOM NODE
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SOURCE_DIR: "build"
+
+      name: Production
+      if: github.ref == 'refs/heads/production'
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_PRODUCTION_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SOURCE_DIR: "build"
