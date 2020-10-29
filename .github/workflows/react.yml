@@ -42,5 +42,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: echo ${{github.ref}}
 
-    -name: Random name for step
-    -run: echo MAJID
+    - name: Custome node ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: echo CUSTOM NODE
