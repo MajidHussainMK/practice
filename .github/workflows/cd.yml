@@ -6,10 +6,11 @@ on:
       - master
       - main
 
-    jobs:
-      deploy:
-        name: Deploy
-        runs-on: ubuntu-latest
+jobs:
+  deploy:
+        
+      name: Deploy
+      runs-on: ubuntu-latest
 
       steps:
       - uses: actions/checkout@v1
