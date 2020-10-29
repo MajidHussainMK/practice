@@ -2,7 +2,7 @@ name: ReactJs CI/CD
 
 on:
   push:
-    branches: [ staging, production ]
+    branches: [ main, master ]
 
 jobs:
   test:
@@ -42,7 +42,7 @@ jobs:
     # - run: yarn run build
 
       name: Staging
-      if: github.ref == 'refs/heads/staging'
+      if: github.ref == 'refs/heads/main'
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --delete
@@ -54,7 +54,7 @@ jobs:
         SOURCE_DIR: "build"
 
       name: Production
-      if: github.ref == 'refs/heads/production'
+      if: github.ref == 'refs/heads/master'
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --delete
