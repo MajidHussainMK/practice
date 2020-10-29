@@ -33,9 +33,6 @@ jobs:
       name: Deploy
       runs-on: ubuntu-latest
 
-      env:
-        SOURCE_DIR: 'build'
-
       steps:
       - uses: actions/checkout@v1
 
@@ -57,5 +54,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-        env:
       - run: echo CUSTOM NODE
