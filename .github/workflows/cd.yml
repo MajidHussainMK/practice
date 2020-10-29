@@ -51,8 +51,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: echo main
-        env:
-      - run: echo No error
 
       - name: Deploy production
         if: github.ref == 'refs/heads/master'
@@ -60,3 +58,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: echo CUSTOM NODE
+        env:
+      - run: echo No error
