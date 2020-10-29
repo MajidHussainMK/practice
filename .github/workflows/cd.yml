@@ -15,9 +15,6 @@ jobs:
       matrix:
         node-version: [14.x]
 
-    env:
-      SOURCE_DIR: 'build'
-
     steps:
     - uses: actions/checkout@v2
     
@@ -35,6 +32,9 @@ jobs:
 
       name: Deploy
       runs-on: ubuntu-latest
+
+      env:
+      SOURCE_DIR: 'build'
 
       steps:
       - uses: actions/checkout@v1
