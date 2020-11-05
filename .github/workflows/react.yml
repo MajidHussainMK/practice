@@ -25,11 +25,11 @@ jobs:
     # - run: npm i
     # - run: npm test
     # - run: npm run build
-    - run: echo This should run when code is pushed on master $NAME
+    - run: echo This should run when code is pushed on master $NAME $LAST
     env:
-      NAME: 'HUSSAIN'
+      LAST: 'HUSSAIN'
       if: github.ref == 'refs/heads/master'
-      NAME: 'MAJID'
+      NAME: 'if is working'
 
   deploy:
       needs: testAndBuild
