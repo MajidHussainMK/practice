@@ -1,4 +1,4 @@
-name: Continuous Deployment
+name: React Deployment
 
 on:
   push:
@@ -14,6 +14,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+    env:
+      NAME: 'MAJID'
 
     steps:
     - uses: actions/checkout@v2
@@ -25,7 +27,7 @@ jobs:
     # - run: npm i
     # - run: npm test
     # - run: npm run build
-    - run: echo This should run when code is pushed on master
+    - run: echo This should run when code is pushed on master $NAME
 
   deploy:
       needs: testAndBuild
