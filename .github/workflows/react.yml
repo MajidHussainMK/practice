@@ -28,7 +28,7 @@ jobs:
     - run: echo This should run when code is pushed on master $NAME $LAST
     env:
       LAST: 'HUSSAIN'
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       NAME: 'if is working'
 
   deploy:
