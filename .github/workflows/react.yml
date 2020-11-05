@@ -14,8 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-    env:
-      NAME: 'MAJID'
 
     steps:
     - uses: actions/checkout@v2
@@ -28,6 +26,8 @@ jobs:
     # - run: npm test
     # - run: npm run build
     - run: echo This should run when code is pushed on master $NAME
+    env:
+      NAME: 'MAJID'
 
   deploy:
       needs: testAndBuild
@@ -58,68 +58,68 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: echo CUSTOM NODE
       
-  deployAmplifyMain:
-    if: github.ref == 'refs/heads/main'
-    name: 'Deploy amplify Main environment'
-    runs-on: ubuntu-latest
+  # deployAmplifyMain:
+  #   if: github.ref == 'refs/heads/main'
+  #   name: 'Deploy amplify Main environment'
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
+  #   steps:
+  #   - uses: actions/checkout@v1
 
-    - name: use node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+  #   - name: use node.js ${{ matrix.node-version }}
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: ${{ matrix.node-version }}
 
-    - name: configure amplify
-      uses: ambientlight/amplify-cli-action@0.2.1
-      with:
-        amplify_command: configure
-        amplify_env: staging
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-2
+  #   - name: configure amplify
+  #     uses: ambientlight/amplify-cli-action@0.2.1
+  #     with:
+  #       amplify_command: configure
+  #       amplify_env: staging
+  #     env:
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: us-east-2
     
-    - name: Staging
-      uses: ambientlight/amplify-cli-action@0.2.1
-      with:
-        amplify_command: push
-        amplify_env: staging
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-2
+  #   - name: Staging
+  #     uses: ambientlight/amplify-cli-action@0.2.1
+  #     with:
+  #       amplify_command: push
+  #       amplify_env: staging
+  #     env:
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: us-east-2
   
-  deployAmplifyProduction:
-    if: github.ref == 'refs/heads/master'
-    name: 'Deploy amplify Master environment'
-    runs-on: ubuntu-latest
+  # deployAmplifyProduction:
+  #   if: github.ref == 'refs/heads/master'
+  #   name: 'Deploy amplify Master environment'
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
+  #   steps:
+  #   - uses: actions/checkout@v1
 
-    - name: use node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+  #   - name: use node.js ${{ matrix.node-version }}
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: ${{ matrix.node-version }}
 
-    - name: configure amplify
-      uses: ambientlight/amplify-cli-action@0.2.1
-      with:
-        amplify_command: configure
-        amplify_env: production
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-2
+  #   - name: configure amplify
+  #     uses: ambientlight/amplify-cli-action@0.2.1
+  #     with:
+  #       amplify_command: configure
+  #       amplify_env: production
+  #     env:
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: us-east-2
     
-    - name: Master
-      uses: ambientlight/amplify-cli-action@0.2.1
-      with:
-        amplify_command: push
-        amplify_env: production
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-2
+  #   - name: Master
+  #     uses: ambientlight/amplify-cli-action@0.2.1
+  #     with:
+  #       amplify_command: push
+  #       amplify_env: production
+  #     env:
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: us-east-2
