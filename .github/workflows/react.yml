@@ -27,6 +27,8 @@ jobs:
     # - run: npm run build
     - run: echo This should run when code is pushed on master $NAME
     env:
+      NAME: 'HUSSAIN'
+      if: github.ref == 'refs/heads/master'
       NAME: 'MAJID'
 
   deploy:
