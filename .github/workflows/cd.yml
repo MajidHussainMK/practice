@@ -1,57 +1,57 @@
-name: Continuous Deployment
+# name: Continuous Deployment
 
-on:
-  push:
-    branches:
-      - master
-      - main
+# on:
+#   push:
+#     branches:
+#       - master
+#       - main
 
-jobs:
-  testAndBuild:
+# jobs:
+#   testAndBuild:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+#     strategy:
+#       matrix:
+#         node-version: [14.x]
 
-    steps:
-    - uses: actions/checkout@v2
+#     steps:
+#     - uses: actions/checkout@v2
     
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm i
-    - run: npm test
-    - run: CI=false npm run build
-    - run: echo This should run when code is pushed on master
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v1
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#     - run: npm i
+#     - run: npm test
+#     - run: CI=false npm run build
+#     - run: echo This should run when code is pushed on master
 
-  deploy:
-      needs: testAndBuild
+#   deploy:
+#       needs: testAndBuild
 
-      name: Deploy
-      runs-on: ubuntu-latest
+#       name: Deploy
+#       runs-on: ubuntu-latest
 
-      steps:
-      - uses: actions/checkout@v1
+#       steps:
+#       - uses: actions/checkout@v1
 
-      - name: Install dependencies
-        run: yarn
+#       - name: Install dependencies
+#         run: yarn
 
-      - name: Build
-        run: yarn build
+#       - name: Build
+#         run: yarn build
 
-      - name: Deploy staging
-        if: github.ref == 'refs/heads/main'
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: echo main
+#       - name: Deploy staging
+#         if: github.ref == 'refs/heads/main'
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#       - run: echo main
 
-      - name: Deploy production
-        if: github.ref == 'refs/heads/master'
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: echo CUSTOM NODE
+#       - name: Deploy production
+#         if: github.ref == 'refs/heads/master'
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#       - run: echo CUSTOM NODE

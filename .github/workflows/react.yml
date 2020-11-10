@@ -1,13 +1,11 @@
-name: React Deployment
+name: CI/CD
 
 on:
   push:
-    branches:
-      - master
-      - main
+    branches: [ main, master ]
 
 jobs:
-  testAndBuild:
+  test:
 
     runs-on: ubuntu-latest
 
@@ -17,111 +15,52 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    # - run: npm i
-    # - run: npm test
-    # - run: npm run build
-    - run: echo This should run when code is pushed on master $NAME $LAST
-    env:
-      LAST: 'HUSSAIN'
-      if: github.ref == 'refs/heads/main'
-      NAME: 'if is working'
+    
+    - run: yarn install
+    - run: yarn run test
 
   deploy:
-      needs: testAndBuild
+    needs: test  
 
-      name: Deploy
-      runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      AWS_REGION: "${{ secrets.AWS_REGION }}"
+      SOURCE_DIR: "build"
 
-      steps:
-      - uses: actions/checkout@v1
+    name: Deploy
+    runs-on: ubuntu-latest
 
-      - name: Install dependencies
-        run: yarn
+    steps:
+    - uses: actions/checkout@v2
 
-      - name: Build
-        run: yarn build
-
-      - name: Deploy staging
-        if: github.ref == 'refs/heads/main'
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: echo main
-
-      - name: Deploy production
-        if: github.ref == 'refs/heads/master'
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: echo CUSTOM NODE
-      
-  # deployAmplifyMain:
-  #   if: github.ref == 'refs/heads/main'
-  #   name: 'Deploy amplify Main environment'
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - uses: actions/checkout@v1
-
-  #   - name: use node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-
-  #   - name: configure amplify
-  #     uses: ambientlight/amplify-cli-action@0.2.1
-  #     with:
-  #       amplify_command: configure
-  #       amplify_env: staging
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       AWS_REGION: us-east-2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     
-  #   - name: Staging
-  #     uses: ambientlight/amplify-cli-action@0.2.1
-  #     with:
-  #       amplify_command: push
-  #       amplify_env: staging
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       AWS_REGION: us-east-2
-  
-  # deployAmplifyProduction:
-  #   if: github.ref == 'refs/heads/master'
-  #   name: 'Deploy amplify Master environment'
-  #   runs-on: ubuntu-latest
+    - run: yarn install
+    - run: CI=false yarn run build
 
-  #   steps:
-  #   - uses: actions/checkout@v1
-
-  #   - name: use node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-
-  #   - name: configure amplify
-  #     uses: ambientlight/amplify-cli-action@0.2.1
-  #     with:
-  #       amplify_command: configure
-  #       amplify_env: production
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       AWS_REGION: us-east-2
+    - name: MAIN
+      if: github.ref == 'refs/heads/main'
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: "${{ secrets.AWS_S3_MAIN_BUCKET }}"
+      run: echo AWS_S3_BUCKET
     
-  #   - name: Master
-  #     uses: ambientlight/amplify-cli-action@0.2.1
-  #     with:
-  #       amplify_command: push
-  #       amplify_env: production
-  #     env:
-  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       AWS_REGION: us-east-2
+    - name: MASTER
+      if: github.ref == 'refs/heads/master'
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: "${{ secrets.AWS_S3_MASTER_BUCKET }}"
+      run: echo AWS_S3_BUCKET
