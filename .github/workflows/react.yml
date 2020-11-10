@@ -54,7 +54,7 @@ jobs:
         args: --acl public-read --delete
       env:
         AWS_S3_BUCKET: "${{ secrets.AWS_S3_MAIN_BUCKET }}"
-    - run: echo AWS_S3_BUCKET
+    - run: echo $AWS_S3_BUCKET
     
     - name: MASTER
       if: github.ref == 'refs/heads/master'
@@ -63,4 +63,4 @@ jobs:
         args: --acl public-read --delete
       env:
         AWS_S3_BUCKET: "${{ secrets.AWS_S3_MASTER_BUCKET }}"
-    - run: echo AWS_S3_BUCKET
+    - run: echo $AWS_S3_BUCKET
