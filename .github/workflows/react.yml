@@ -53,7 +53,7 @@ jobs:
       with:
         args: --acl public-read --delete
       env:
-        AWS_S3_BUCKET: "${{ secrets.AWS_S3_MAIN_BUCKET }}"
+        AWS_S3_BUCKET: "MAIN BUCKET"
     - run: echo $AWS_S3_BUCKET
     
     - name: MASTER
@@ -62,5 +62,5 @@ jobs:
       with:
         args: --acl public-read --delete
       env:
-        AWS_S3_BUCKET: "${{ secrets.AWS_S3_MASTER_BUCKET }}"
+        AWS_S3_BUCKET: "MASTER BUCKET"
     - run: echo $AWS_S3_BUCKET
